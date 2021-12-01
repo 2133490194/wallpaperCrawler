@@ -3,16 +3,16 @@ const axios = require('axios')
 const path = require('path')
 const fs = require('fs')
 const request = require('request')
+const logger = require('../utils/log4')
 
 const { dirExists } = require('../utils/auto-create-dir')
 
 const wallpaperCrawler = async (relativePath, imgPage) => {
   let $ = ''
   let previewImgElement = ''
-  const headers = {
-    'User-Agent':
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/18.17763'
-  }
+  let start_time
+  let end_time
+  let spend_time
   const url = `https://wallpapercave.com/featured-wallpapers/${imgPage}`
   const download_url =
     'https://wallpapercave.com/download/very-nice-wallpapers-'
@@ -22,6 +22,9 @@ const wallpaperCrawler = async (relativePath, imgPage) => {
   return new Promise(async (resolve, reject) => {
     // 判断此路径是否存在，若不存在，则自动创建
     await dirExists(filePath)
+
+    logger.info('开始抓取壁纸...')
+    start_time = Math.round(new Date())
 
     const element = await axios({
       method: 'get',
@@ -42,10 +45,11 @@ const wallpaperCrawler = async (relativePath, imgPage) => {
 
       previewImgElement =
         previewImgElement +
-        `<div style="margin-bottom:10px">
+        `<div style="margin-bottom:30px; text-align="center">
         <img src=https://wallpapercave.com${$(item).attr('src')} alt=${i} />
-        <a href=https://wallpapercave.com${$(item).attr('src')}>${imgName}</a>
-        <br/>
+        <a href=${loadImgUrl} style="text-a">
+          下载壁纸：${imgName}
+        </a>
       </div>
       `
       await download_img(
@@ -56,6 +60,11 @@ const wallpaperCrawler = async (relativePath, imgPage) => {
       ).then(() => {
         index--
         if (!index) {
+          end_time = Math.round(new Date())
+          spend_time = (end_time - start_time) / 1000
+          logger.info(
+            `抓取结束，共抓取到${element.length}张壁纸，用时${spend_time}s`
+          )
           resolve({ count: element.length, html: previewImgElement })
         }
       })
@@ -74,6 +83,7 @@ function download_img(filePath, img_url, file_name, postfix) {
     const readStream = await request(img_url)
 
     readStream.pipe(writeStream)
+
     readStream.on('end', res => {
       writeStream.end()
     })
@@ -81,7 +91,6 @@ function download_img(filePath, img_url, file_name, postfix) {
       reject(err)
     })
     writeStream.on('finish', () => {
-      console.log(`已写入图片${file_name}${postfix}`)
       resolve(true)
     })
   })

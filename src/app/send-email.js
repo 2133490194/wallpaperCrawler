@@ -2,10 +2,9 @@ const nodemailer = require('nodemailer')
 
 const config = require('./config')
 const logger = require('../utils/log4')
-const { wallpaperCrawler } = require('./wallpaperCrawler')
 
 const transport_config = {
-  host: 'smtp.163.com',
+  host: config.SENDER_HOST,
   secure: true,
   auth: {
     user: config.SENDER_EMAIL,
@@ -23,12 +22,13 @@ const send_config = {
 }
 
 const sendEmail = async () => {
+  logger.info('邮件开始发送...')
   return new Promise(async (resolve, reject) => {
     let transporter = nodemailer.createTransport(transport_config)
 
     transporter.sendMail(send_config, (err, info) => {
       if (err) {
-        logger.error(err)
+        logger.error('邮件发送失败。',err)
         reject(err)
       } else {
         resolve(true)
