@@ -22,7 +22,7 @@ const startCrawler = async () => {
   }).then(async res => {
     const end_time = Math.round(new Date())
     logger.info(
-      `本次共爬取${res.wallData.length}张壁纸，耗时${
+      `本次共抓取${res.wallData.length}张壁纸，耗时${
         (end_time - start_time) / 1000
       }s`
     )
