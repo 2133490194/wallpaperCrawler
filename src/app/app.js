@@ -47,6 +47,7 @@ const startCrawler = async () => {
 }
 
 const scheduleCron = cronRule => {
+  logger.info('定时任务已开启...')
   // const rule = new schedule.RecurrenceRule()
   // rule.second = [0, 20, 40, 59] // 秒
   // rule.minute = 0 //分
