@@ -2,6 +2,7 @@ const dotenv = require('dotenv')
 
 dotenv.config()
 
+
 const {
   SENDER_EMAIL,
   RECIPIENT_EMAIL,
@@ -9,7 +10,9 @@ const {
   SENDER_NAME,
   EMAIL_SUBJECT,
   RECURRENCE_RULE,
-  SENDER_HOST
+  SENDER_HOST,
+  RESOLUTION,
+  DIR_PATH
 } = process.env
 
 module.exports = {
@@ -19,5 +22,7 @@ module.exports = {
   SENDER_NAME,
   EMAIL_SUBJECT,
   RECURRENCE_RULE,
-  SENDER_HOST
+  SENDER_HOST,
+  RESOLUTION,
+  DIR_PATH
 }
