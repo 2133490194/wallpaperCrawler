@@ -20,6 +20,8 @@ SENDER_NAME=通知
 RECIPIENT_EMAIL=xxxxxxx@163.com
 EMAIL_SUBJECT=今日壁纸抓取结果
 RECURRENCE_RULE=0 0 9 * * * 
+RESOLUTION=1920x1080
+DIR_PATH=imgData
 ```
 ### 4.配置属性说明：
 > SENDER_EMAIL：发送方邮件地址    
