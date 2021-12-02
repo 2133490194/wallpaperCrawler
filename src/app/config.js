@@ -10,7 +10,8 @@ const {
   RECURRENCE_RULE,
   SENDER_HOST,
   RESOLUTION,
-  DIR_PATH
+  DIR_PATH,
+  RATIOS
 } = process.env
 
 module.exports = {
@@ -22,5 +23,6 @@ module.exports = {
   RECURRENCE_RULE,
   SENDER_HOST,
   RESOLUTION,
-  DIR_PATH
+  DIR_PATH,
+  RATIOS
 }

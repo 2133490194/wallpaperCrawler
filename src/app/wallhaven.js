@@ -1,16 +1,14 @@
 const cheerio = require('cheerio')
 const axios = require('axios')
 const path = require('path')
-const async = require('async')
-const logger = require('../utils/log4')
 
 const { dirExists } = require('../utils/auto-create-dir')
-const { downloadImg } = require('../utils')
+
 const wallhaven = option => {
   return new Promise(async (resolve, reject) => {
-    const { seed, dirPath, resolution, page } = option
+    const { seed, dirPath, resolution, page, ratios } = option
     const savePath = path.resolve(path.join(__dirname, '..'), dirPath)
-    let url = `https://wallhaven.cc/search?categories=010&purity=100&sorting=random&order=desc&resolutions=${resolution}&seed=${seed}&page=${page}`
+    let url = `https://wallhaven.cc/search?categories=010&purity=100&sorting=random&order=desc&ratios=${ratios}&resolutions=${resolution}&seed=${seed}&page=${page}`
     // const headers = {
     //   'User-Agent':
     //     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/18.17763'
@@ -21,8 +19,6 @@ const wallhaven = option => {
     let end_time
     // 则自动创建存储文件夹
     await dirExists(savePath)
-
-    logger.info('开始抓取壁纸...')
 
     // 记录开始时间
     start_time = Math.round(new Date())
@@ -71,26 +67,28 @@ const wallhaven = option => {
       item.downloadUrl = downloadUrl
     })
 
-    // 开始按顺序写入文件流
-    async.mapSeries(
-      wallData,
-      (item, callback) => {
-        setTimeout(async () => {
-          await downloadImg(dirPath, item.downloadUrl, item.name, item.postfix)
-          callback(null, item)
-        }, 0)
-      },
-      function (err, results) {
-        // console.log(err, results)
-        end_time = Math.round(new Date())
-        logger.info(
-          `抓取结束，共抓取到${wallData.length}张壁纸，用时${
-            (end_time - start_time) / 1000
-          }s`
-        )
-        resolve(wallData)
-      }
-    )
+    resolve(wallData)
+
+    // // 开始按顺序写入文件流
+    // async.mapSeries(
+    //   wallData,
+    //   (item, callback) => {
+    //     setTimeout(async () => {
+    //       await downloadImg(dirPath, item.downloadUrl, item.name, item.postfix)
+    //       callback(null, item)
+    //     }, 0)
+    //   },
+    //   function (err, results) {
+    //     // console.log(err, results)
+    //     end_time = Math.round(new Date())
+    //     logger.info(
+    //       `抓取结束，共抓取到${wallData.length}张壁纸，用时${
+    //         (end_time - start_time) / 1000
+    //       }s`
+    //     )
+    //     resolve(wallData)
+    //   }
+    // )
   })
 }
 
