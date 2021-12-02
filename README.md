@@ -22,18 +22,29 @@ EMAIL_SUBJECT=今日壁纸抓取结果
 RECURRENCE_RULE=0 0 9 * * * 
 RESOLUTION=1920x1080
 DIR_PATH=imgData
+RATIOS=9x16
 ```
 ### 4.配置属性说明：
-> SENDER_EMAIL：发送方邮件地址    
-> SENDER_PASS：发送方邮件授权码，即IMAP/SMTP服务授权码，需登录至邮箱官网自行开启该服务，开启后自动生成该密码；
-> SENDER_EMAIL与SENDER_PASS若有其中一个没有设置，则不开启邮件模式，文件存入本地后不会被删除。若邮箱配置均设置，则开启邮件发送模式，邮件发送完毕后将自动删除本地文件。   
+> SENDER_EMAIL：发送方邮件地址（若不配置发送方邮件或发送方邮件授权码，则不会发送邮件，文件将保存至本地，可通过配置DIR_PATH属性，来决定文件存放位置，若两项都配，则开启发送邮件模式，文件不会保存至本地，文件可在邮件内的下载链接进行下载。）    
+> 
+> SENDER_PASS：发送方邮件授权码，即IMAP/SMTP服务授权码，需登录至邮箱官网自行开启该服务，开启后自动生成该密码。
+>  
 > SENDER_HOST：发送邮件服务器；qq邮箱为smtp.qq.com；163邮箱为smtp.163.com    
+> 
 > SENDER_NAME：发送者名称    
+> 
 > RECIPIENT_EMAIL：接收方邮箱    
+> 
 > EMAIL_SUBJECT=：邮件标题    
+> 
 > RECURRENCE_RULE：定时任务规则    
-> RESOLUTION：分辨率；pc端可填1920x1080 移动端可填1242x2688；默认为1920x1080   
+> 
+> RESOLUTION：分辨率（格式：1920x1080）
+> 
 > DIR_PATH：文件存储目录：默认存储至src/imgData下   
+> 
+> RATIOS：比例（格式：16x9 16x10 21x9 32x9 48x9 9x16 10x16 9x18 1x1 3x2 4x3 5x4）；比例和分辨率二选其一即可，若都配，则两项都生效    
+> 
 
 ### 5.开启定时任务：
 > 在项目根目录下执行命令：` npm start `；将会根据配置中定时任务规则定时执行。       
