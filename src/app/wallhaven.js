@@ -67,10 +67,8 @@ const wallhaven = option => {
     wallData.forEach(async item => {
       const prefix = item.previewUrl.split('/')[4]
       const wallName = item.previewUrl.split('/')[5].split('.')[0]
-
       const downloadUrl = `https://w.wallhaven.cc/full/${prefix}/wallhaven-${wallName}.${item.postfix}`
       item.downloadUrl = downloadUrl
-      // await downloadImg(dirPath, item.downloadUrl, item.name, item.postfix)
     })
 
     // 开始按顺序写入文件流

@@ -1,8 +1,6 @@
 const dotenv = require('dotenv')
 
 dotenv.config()
-
-
 const {
   SENDER_EMAIL,
   RECIPIENT_EMAIL,
