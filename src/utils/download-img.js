@@ -10,9 +10,7 @@ function downloadImg(filePath, img_url, file_name, count) {
 
     // 调request下的pipe方法，配合文档写入流，存储图片
     const readStream = await request(img_url)
-
     readStream.pipe(writeStream)
-
     writeStream.on('error', err => {
       reject(err)
     })

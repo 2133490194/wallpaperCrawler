@@ -1,11 +1,9 @@
 const randomString = require('random-string')
-const path = require('path')
 const schedule = require('node-schedule')
 const config = require('./config')
 const { sendEmail, send_config } = require('./send-email')
 const { wallpaperCrawler } = require('./wallpaperCrawler')
-const { delDir, emailAttachmentMap, logger } = require('../utils')
-const { becomingHtml } = require('../utils')
+const { becomingHtml, logger } = require('../utils')
 
 const startCrawler = async () => {
   const resolution = config.RESOLUTION || ''
