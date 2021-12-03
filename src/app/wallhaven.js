@@ -1,7 +1,6 @@
 const cheerio = require('cheerio')
 const axios = require('axios')
 const path = require('path')
-
 const { dirExists } = require('../utils')
 
 const wallhaven = option => {

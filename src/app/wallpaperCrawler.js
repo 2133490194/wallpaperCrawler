@@ -1,6 +1,5 @@
 const { wallhaven } = require('./wallhaven')
 const { saveImg } = require('../utils')
-const { logger } = require('../utils')
 const config = require('../app/config')
 
 const wallpaperCrawler = option => {
