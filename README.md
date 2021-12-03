@@ -12,18 +12,20 @@
 ### 3.如何配置：
 > 你需要在.env文件中以键值对的形式编写配置；   
 > 例如：
-``` 
-SENDER_EMAIL=xxxxxxx@qq.com
-SENDER_PASS=123456789abcd
-SENDER_HOST=smtp.qq.com
-SENDER_NAME=通知
-RECIPIENT_EMAIL=xxxxxxx@163.com
-EMAIL_SUBJECT=今日壁纸抓取结果
-RECURRENCE_RULE=0 0 9 * * * 
-RESOLUTION=1920x1080
-DIR_PATH=imgData
-RATIOS=9x16
-```
+> ``` 
+> SENDER_EMAIL=xxxxxxx@qq.com
+> SENDER_PASS=123456789abcd
+> SENDER_HOST=smtp.qq.com
+> SENDER_NAME=通知
+> RECIPIENT_EMAIL=xxxxxxx@163.com
+> EMAIL_SUBJECT=今日壁纸抓取结果
+> RECURRENCE_RULE=0 0 9 * * * 
+> RESOLUTION=1920x1080
+> DIR_PATH=imgData
+> RATIOS=9x16
+> ```
+
+
 ### 4.配置属性说明：
 > SENDER_EMAIL：发送方邮件地址（若不配置发送方邮件或发送方邮件授权码，则不会发送邮件，文件将保存至本地，可通过配置DIR_PATH属性，来决定文件存放位置，若两项都配，则开启发送邮件模式，文件不会保存至本地，文件可在邮件内的下载链接进行下载。）    
 > 
@@ -43,14 +45,16 @@ RATIOS=9x16
 > 
 > DIR_PATH：文件存储目录：默认存储至src/imgData下   
 > 
-> RATIOS：比例（格式：16x9 16x10 21x9 32x9 48x9 9x16 10x16 9x18 1x1 3x2 4x3 5x4）；比例和分辨率二选其一即可，若都配，则两项都生效    
+> RATIOS：比例（格式：16x9 16x10 21x9 32x9 48x9 9x16 10x16 9x18 1x1 3x2 4x3 5x4）；比例和分辨率二选其一即可，若都配，则两项都生效，若都不配，则包含所有分辨率和比例    
 > 
 
-### 5.开启定时任务：
+### 5.直接运行：
+> 在项目根目录下执行 ` npm run send `直接运行，将直接执行爬虫任务
+
+### 6.开启定时任务：
 > 在项目根目录下执行命令：` npm start `；将会根据配置中定时任务规则定时执行。       
 
-### 6.直接运行：
-> ` npm run send ` 将直接执行爬虫任务
+
 
 ### 7.如何配置定时任务规则：
 > 该项目使用的是 Cron 风格的定时器：  
