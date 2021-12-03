@@ -39,7 +39,7 @@ const wallhaven = option => {
     wallPreviewUrl.each((i, item) => {
       const url = $(item).attr('data-src')
       wallData.push({
-        name: i + 1 + '-' + Math.round(new Date() / 1000),
+        name: url.split('/')[5].split('.')[0],
         previewUrl: url
       })
     })
@@ -53,8 +53,10 @@ const wallhaven = option => {
         postfix = 'jpg'
       }
       wallData[i].postfix = postfix
+      wallData[i].name += '.' + postfix
     })
 
+    console.log(wallData)
     // 开始拼接所有实际图片的跳转链接,将链接存入资源对象,并开始写入数据
     wallData.forEach(async item => {
       const prefix = item.previewUrl.split('/')[4]
