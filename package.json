@@ -1,6 +1,6 @@
 {
-  "name": "learn_nodemailer",
-  "version": "1.0.0",
+  "name": "wallpaper-crawler",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
