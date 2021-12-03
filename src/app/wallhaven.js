@@ -66,27 +66,6 @@ const wallhaven = option => {
     })
 
     resolve(wallData)
-
-    // // 开始按顺序写入文件流
-    // async.mapSeries(
-    //   wallData,
-    //   (item, callback) => {
-    //     setTimeout(async () => {
-    //       await downloadImg(dirPath, item.downloadUrl, item.name, item.postfix)
-    //       callback(null, item)
-    //     }, 0)
-    //   },
-    //   function (err, results) {
-    //     // console.log(err, results)
-    //     end_time = Math.round(new Date())
-    //     logger.info(
-    //       `抓取结束，共抓取到${wallData.length}张壁纸，用时${
-    //         (end_time - start_time) / 1000
-    //       }s`
-    //     )
-    //     resolve(wallData)
-    //   }
-    // )
   })
 }
 
