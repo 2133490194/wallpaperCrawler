@@ -32,9 +32,8 @@ const startCrawler = async () => {
       // send_config.attachments = emailAttachmentMap(dirPath)
       send_config.html = `
       <div>
-        <span>自动抓取壁纸工具--反馈邮件</span><br/>
-        <span>下载方式：预览图下方跳转链接，跳转后手动另存为即可；</span><br/>
-        <span>本次共抓取${res.wallData.length}张壁纸</span>
+        <span>本次共抓取${res.wallData.length}张壁纸</span><br/>
+        <span>下载方式：点击预览图下方跳转链接，跳转后手动另存为即可</span><br/>
         ${html}
       </div>`
 
