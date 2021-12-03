@@ -8,20 +8,16 @@ const wallhaven = option => {
   return new Promise(async (resolve, reject) => {
     const { seed, dirPath, resolution, page, ratios } = option
     const savePath = path.resolve(path.join(__dirname, '..'), dirPath)
-    let url = `https://wallhaven.cc/search?categories=010&purity=100&sorting=random&order=desc&ratios=${ratios}&resolutions=${resolution}&seed=${seed}&page=${page}`
+    let url = `https://wallhaven.cc/search?categories=110&purity=110&sorting=random&order=desc&ratios=${ratios}&resolutions=${resolution}&seed=${seed}&page=${page}`
     // const headers = {
     //   'User-Agent':
     //     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/18.17763'
     // }
     let $ = ''
     let wallData = []
-    let start_time
-    let end_time
+
     // 则自动创建存储文件夹
     await dirExists(savePath)
-
-    // 记录开始时间
-    start_time = Math.round(new Date())
 
     // 获取预览图对象和a标签对象
     const elementData = await axios({
