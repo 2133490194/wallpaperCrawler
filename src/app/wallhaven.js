@@ -19,7 +19,7 @@ const wallhaven = option => {
     // 则自动创建存储文件夹
     await dirExists(savePath)
 
-    // 获取预览图对象和a标签对象
+    // 抓取相关标签对象
     const elementData = await axios({
       method: 'get',
       url
