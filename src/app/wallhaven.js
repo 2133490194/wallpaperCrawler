@@ -1,20 +1,23 @@
+const randomString = require('random-string')
 const cheerio = require('cheerio')
 const axios = require('axios')
 const path = require('path')
 const { dirExists } = require('../utils')
 
-const wallhaven = option => {
+const wallhaven = async (option, wallData) => {
   return new Promise(async (resolve, reject) => {
-    const { seed, dirPath, resolution, page, ratios } = option
+    const { seed, dirPath, resolution, page, ratios, nsfw, wallpaperCount } =
+      option
+
     const savePath = path.resolve(path.join(__dirname, '..'), dirPath)
-    let url = `https://wallhaven.cc/search?categories=110&purity=110&sorting=random&order=desc&ratios=${ratios}&resolutions=${resolution}&seed=${seed}&page=${page}`
+
+    let url = `https://wallhaven.cc/search?categories=111&purity=${nsfw}&sorting=random&order=desc&ratios=${ratios}&resolutions=${resolution}&seed=${seed}&page=${page}`
     // const headers = {
     //   'User-Agent':
     //     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/18.17763'
     // }
     let $ = ''
-    let wallData = []
-
+    let pageData = []
     // 则自动创建存储文件夹
     await dirExists(savePath)
 
@@ -37,7 +40,7 @@ const wallhaven = option => {
     // 获取所有预览图链接，生成资源数据对象, 拿到每张图片的名称
     wallPreviewUrl.each((i, item) => {
       const url = $(item).attr('data-src')
-      wallData.push({
+      pageData.push({
         name: url.split('/')[5].split('.')[0],
         previewUrl: url
       })
@@ -51,18 +54,31 @@ const wallhaven = option => {
       } else {
         postfix = 'jpg'
       }
-      wallData[i].postfix = postfix
-      wallData[i].name += '.' + postfix
+      pageData[i].postfix = postfix
+      pageData[i].name += '.' + postfix
     })
 
     // 开始拼接所有实际图片的跳转链接,将链接存入资源对象,并开始写入数据
-    wallData.forEach(async item => {
+    pageData.forEach(async item => {
       const prefix = item.previewUrl.split('/')[4]
       const downloadUrl = `https://w.wallhaven.cc/full/${prefix}/wallhaven-${item.name}`
       item.downloadUrl = downloadUrl
     })
 
-    resolve(wallData)
+    wallData.push(...pageData)
+
+    if (wallData.length >= wallpaperCount) {
+      wallData = wallData.filter((item, index, array) => {
+        if (index + 1 <= wallpaperCount) {
+          return true
+        }
+      })
+      resolve(wallData)
+    } else {
+      option.seed = randomString({ length: 6 })
+      wallData = await wallhaven(option, wallData)
+      resolve(wallData)
+    }
   })
 }
 

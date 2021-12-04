@@ -1,17 +1,25 @@
 const { wallhaven } = require('./wallhaven')
-const { readInImg } = require('../utils')
-const config = require('../app/config')
+const { logger } = require('../utils')
 
 const wallpaperCrawler = option => {
   return new Promise(async (resolve, reject) => {
-    await wallhaven(option).then(async res => {
-      if (!(config.SENDER_EMAIL && config.SENDER_PASS)) {
-        await readInImg(res, option.dirPath).then(() => {
-          resolve({ wallData: res })
-        })
-      }
-      resolve({ wallData: res })
-    })
+    logger.info('开始抓取壁纸...')
+    let wallData = []
+    // 记录开始时间
+    const crawlerStartTime = Math.round(new Date())
+
+    // 开始抓取wallhaven站点壁纸
+    const finalWallData = await wallhaven(option, wallData)
+
+    // 记录结束时间
+    const crawlerEndTime = Math.round(new Date())
+
+    logger.info(
+      `共解析${finalWallData.length}张壁纸数据，用时${
+        (crawlerEndTime - crawlerStartTime) / 1000
+      }s`
+    )
+    resolve(finalWallData)
   })
 }
 

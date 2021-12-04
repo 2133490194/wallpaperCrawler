@@ -1,10 +1,11 @@
 const asyncFn = require('async')
 const Bagpipe = require('bagpipe')
-
+const logger = require('./log4')
 const { downloadImg } = require('./download-img')
 
 const readInImg = (wallData, dirPath) => {
   const bagpipe = new Bagpipe(5)
+
   let count = 0
   return new Promise((resolve, reject) => {
     for (let i = 0; i < wallData.length; i++) {
@@ -15,8 +16,10 @@ const readInImg = (wallData, dirPath) => {
         wallData[i].name,
         (err, data) => {
           count++
-          console.log(`已写入${count}张`)
-          if (count === wallData.length) resolve()
+          logger.info(`${count}张已存储成功`)
+          if (count === wallData.length) {
+            resolve(count)
+          }
         }
       )
     }

@@ -15,8 +15,6 @@ function downloadImg(filePath, img_url, file_name, callback) {
   })
 
   writeStream.on('finish', () => {
-    // console.log(`第${count}张写入成功~`)
-    // resolve(true)
     callback && callback(null, file_name)
   })
 }

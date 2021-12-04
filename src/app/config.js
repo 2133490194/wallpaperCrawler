@@ -2,6 +2,8 @@ const dotenv = require('dotenv')
 
 dotenv.config()
 
+const DIR_PATH = 'imgData'
+
 const {
   SENDER_EMAIL,
   RECIPIENT_EMAIL,
@@ -11,8 +13,9 @@ const {
   RECURRENCE_RULE,
   SENDER_HOST,
   RESOLUTION,
-  DIR_PATH,
-  RATIOS
+  RATIOS,
+  NSFW,
+  WALLPAPER_COUNT
 } = process.env
 
 module.exports = {
@@ -25,5 +28,7 @@ module.exports = {
   SENDER_HOST,
   RESOLUTION,
   DIR_PATH,
-  RATIOS
+  RATIOS,
+  NSFW,
+  WALLPAPER_COUNT
 }

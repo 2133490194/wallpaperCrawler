@@ -28,9 +28,11 @@ const sendEmail = async () => {
 
     transporter.sendMail(send_config, (err, info) => {
       if (err) {
-        logger.error('邮件发送失败。',err)
+        logger.error('邮件发送失败。', err)
         reject(err)
       } else {
+        logger.info(`邮件发送成功`)
+        logger.info(``)
         resolve(true)
       }
     })

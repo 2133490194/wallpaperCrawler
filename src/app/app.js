@@ -4,43 +4,69 @@ const config = require('./config')
 
 const { sendEmail, send_config } = require('./send-email')
 const { wallpaperCrawler } = require('./wallpaperCrawler')
-const { becomingHtml, logger } = require('../utils')
+const { becomingHtml, logger, readInImg } = require('../utils')
 
 const startCrawler = async () => {
   const resolution = config.RESOLUTION || ''
   const ratios = config.RATIOS || ''
-  const dirPath = config.DIR_PATH || 'imgData'
-  const start_time = Math.round(new Date())
-  logger.info('开始抓取壁纸...')
+  const dirPath = config.DIR_PATH
+  const isEmailMode = config.SENDER_EMAIL && config.SENDER_PASS
+  const wallpaperCount = config.WALLPAPER_COUNT
+    ? parseInt(config.WALLPAPER_COUNT)
+    : 24
+
+  let nsfw = '100'
+  if (config.NSFW === 'on') {
+    logger.info('绅士模式已开启')
+    nsfw = '110'
+  } else {
+    logger.info('绅士模式已关闭')
+  }
+  logger.info(`本次抓取壁纸目标数为：${wallpaperCount}`)
+  if (isEmailMode) {
+    logger.info(`邮件模式，文件不会保存至本地`)
+  } else {
+    logger.info(`本地存储模式，文件将保存至本地`)
+  }
+
   await wallpaperCrawler({
     page: 1,
     resolution,
     dirPath,
     ratios,
+    nsfw,
+    wallpaperCount,
     seed: randomString({ length: 6 })
-  }).then(async res => {
-    const end_time = Math.round(new Date())
-
-    logger.info(
-      `本次共抓取${res.wallData.length}张壁纸，耗时${
-        (end_time - start_time) / 1000
-      }s`
-    )
-
-    if (config.SENDER_EMAIL && config.SENDER_PASS) {
-      const html = becomingHtml(res.wallData)
-      // send_config.attachments = emailAttachmentMap(dirPath)
+  }).then(async finalWallData => {
+    if (isEmailMode) {
+      const html = becomingHtml(finalWallData)
       send_config.html = `
       <div>
-        <span>本次共抓取${res.wallData.length}张壁纸</span><br/>
-        <span>下载方式：点击预览图下方跳转链接，跳转后手动另存为即可</span><br/>
+        <span>本次共抓取${finalWallData.length}张壁纸</span><br/>
+        <hr/>
+        <span>下载方式：点击预览图下方跳转链接。</span><br/>
+        <span>跳转后手动另存为即可。</span><br/>
+        <br/>
+        <br/>
+        <span>如果您对本工具比较满意，还请前往github为本工具点一个star，这对我非常的重要，感谢您的支持~</span>
+        <a href="https://github.com/mihu915/wallpaperCrawler">前往github</a>
+        <br/>
+        <br/>
         ${html}
       </div>`
+      logger.info('已将壁纸数据打包为邮件格式')
 
-      await sendEmail().then(() => {
-        logger.info(`邮件发送成功`)
-        // delDir(path.resolve(path.join(__dirname, '..'), dirPath))
-        // logger.info('壁纸文件已被清除！')
+      await sendEmail()
+    } else {
+      const saveStartTime = Math.round(new Date())
+      logger.info('开始存储文件至本地...')
+      await readInImg(finalWallData, dirPath).then(count => {
+        const saveEndTime = Math.round(new Date())
+        logger.info(
+          `存储结束，本次共存储${count}张壁纸，用时${
+            (saveEndTime - saveStartTime) / 1000
+          }s`
+        )
       })
     }
   })
@@ -48,21 +74,16 @@ const startCrawler = async () => {
 
 const scheduleCron = cronRule => {
   if (!cronRule) {
-    logger.error('未设置定时任务，将自动退出程序')
-    return
+    logger.error('未设置定时任务规则，请在.env文件中配置规则')
+    throw new Error('未设置定时任务规则，请在.env文件中配置规则')
+  } else {
+    logger.info('定时任务模式启动成功!')
+
+    schedule.scheduleJob(cronRule, async () => {
+      logger.info('定时任务执行中...')
+      await startCrawler()
+    })
   }
-
-  logger.info('定时任务已开启...')
-  // const rule = new schedule.RecurrenceRule()
-  // rule.second = [0, 20, 40, 59] // 秒
-  // rule.minute = 0 //分
-  // rule.hour = 0 // 时
-  // rule.date = 0 // 几号
-  // rule.dayOfWeek = 0 // 星期几
-
-  schedule.scheduleJob(cronRule, async () => {
-    await startCrawler()
-  })
 }
 
 module.exports = { startCrawler, scheduleCron }
