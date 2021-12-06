@@ -23,6 +23,8 @@ const send_config = {
 
 const sendEmail = async () => {
   logger.info('邮件开始发送...')
+  logger.info(`收件邮箱为：${config.RECIPIENT_EMAIL}`)
+
   return new Promise(async (resolve, reject) => {
     let transporter = nodemailer.createTransport(transport_config)
 

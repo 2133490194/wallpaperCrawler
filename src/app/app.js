@@ -48,7 +48,7 @@ const startCrawler = async () => {
         <span>跳转后手动另存为即可。</span><br/>
         <br/>
         <br/>
-        <span>如果您对本工具比较满意，还请前往github为本工具点一个star，这对我非常的重要，感谢您的支持~</span>
+        <span>如果您对本工具比较满意，还请前往github为本工具点一个star</span>
         <a href="https://github.com/mihu915/wallpaperCrawler">前往github</a>
         <br/>
         <br/>

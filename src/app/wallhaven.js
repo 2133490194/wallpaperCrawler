@@ -8,14 +8,8 @@ const wallhaven = async (option, wallData) => {
   return new Promise(async (resolve, reject) => {
     const { seed, dirPath, resolution, page, ratios, nsfw, wallpaperCount } =
       option
-
     const savePath = path.resolve(path.join(__dirname, '..'), dirPath)
-
     let url = `https://wallhaven.cc/search?categories=111&purity=${nsfw}&sorting=random&order=desc&ratios=${ratios}&resolutions=${resolution}&seed=${seed}&page=${page}`
-    // const headers = {
-    //   'User-Agent':
-    //     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/18.17763'
-    // }
     let $ = ''
     let pageData = []
     // 则自动创建存储文件夹
