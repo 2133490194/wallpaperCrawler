@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./src/app/start-crawler.js",
-    "serve": "pm2 start ./ecosystem.config.js --watch",
+    "dev": "node ./src/app/start-crawler.js",
+    "start": "pm2 start ./ecosystem.config.js --watch",
     "stop": "pm2 stop ./ecosystem.config.js",
-    "log": "pm2 log 0",
-    "restart": "pm2 delete 0 && npm run serve",
+    "log": "pm2 log crawler",
+    "restart": "pm2 delete crawler && npm run serve",
     "status": "pm2 status"
   },
   "keywords": [],
