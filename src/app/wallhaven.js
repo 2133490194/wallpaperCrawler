@@ -19,15 +19,31 @@ const wallhaven = async (option, wallData) => {
     const elementData = await axios({
       method: 'get',
       url
-    }).then(res => {
-      $ = cheerio.load(res.data)
-      const wallPreviewUrl = $('ul>li>figure').find('img')
-      const thumbInfo = $('ul>li>figure').find('.thumb-info')
-      return {
-        wallPreviewUrl,
-        thumbInfo
-      }
     })
+      .then(res => {
+        $ = cheerio.load(res.data)
+        const wallPreviewUrl = $('ul>li>figure').find('img')
+
+        if (!wallPreviewUrl.length) {
+          return '未查询到相关壁纸，请检查配置文件.env中的比例与分辨率是否冲突。'
+        }
+
+        const thumbInfo = $('ul>li>figure').find('.thumb-info')
+        return {
+          wallPreviewUrl,
+          thumbInfo
+        }
+      })
+      .catch(err => {
+        resolve('当前网络环境不佳导致请求失败')
+        return
+      })
+
+    // 判断是否为报错信息，若是报错，则return
+    if (typeof elementData === 'string') {
+      resolve(elementData)
+      return
+    }
 
     const { wallPreviewUrl, thumbInfo } = elementData
 

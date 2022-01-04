@@ -11,6 +11,7 @@ const startCrawler = async () => {
   const ratios = config.RATIOS || ''
   const dirPath = config.DIR_PATH
   const isEmailMode = config.SENDER_EMAIL && config.SENDER_PASS
+  console.log(config.RECIPIENT_EMAIL.slice(','))
   const wallpaperCount = config.WALLPAPER_COUNT
     ? parseInt(config.WALLPAPER_COUNT)
     : 24
@@ -38,6 +39,7 @@ const startCrawler = async () => {
     wallpaperCount,
     seed: randomString({ length: 6 })
   }).then(async finalWallData => {
+    if (typeof finalWallData === 'string') return
     if (isEmailMode) {
       const html = becomingHtml(finalWallData)
       send_config.html = `

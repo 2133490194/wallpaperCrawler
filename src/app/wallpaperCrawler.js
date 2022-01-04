@@ -11,6 +11,11 @@ const wallpaperCrawler = option => {
     // 开始抓取wallhaven站点壁纸
     const finalWallData = await wallhaven(option, wallData)
 
+    if (typeof finalWallData === 'string') {
+      logger.info(finalWallData)
+      return resolve(finalWallData)
+    }
+
     // 记录结束时间
     const crawlerEndTime = Math.round(new Date())
 
